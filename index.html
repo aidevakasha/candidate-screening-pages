@@ -50,18 +50,35 @@
             backdrop-filter: blur(8px);
             border: 1px solid var(--line);
         }
+
+        .styled-list {
+            list-style: disc;
+            padding-left: 1.1rem;
+        }
+
+        @media (min-width: 1024px) {
+            .styled-list {
+                column-count: 2;
+                column-gap: 2.5rem;
+            }
+
+            .styled-list li {
+                break-inside: avoid;
+                margin-bottom: 0.75rem;
+            }
+        }
+
+        .styled-list li::marker {
+            color: #ea580c;
+            font-size: 1.05em;
+        }
     </style>
 </head>
 
 <body class="text-slate-900 antialiased">
     <div class="grain min-h-screen">
-        <nav class="max-w-6xl mx-auto px-6 pt-6">
-            <div class="panel rounded-2xl px-5 py-4 flex items-center justify-between shadow-soft">
-                <img src="assets/logo.webp" alt="Makarizo Logo" class="w-28 md:w-32 h-auto">
-                <div class="text-[11px] md:text-xs text-slate-500 font-bold uppercase tracking-[0.22em] text-right">
-                    Recruitment Portal
-                </div>
-            </div>
+        <nav class="max-w-6xl mx-auto px-6 pt-8">
+            <img src="assets/logo.webp" alt="Makarizo Logo" class="w-28 md:w-32 h-auto">
         </nav>
 
         <header class="max-w-6xl mx-auto px-6 pt-12 pb-20 md:pt-16 md:pb-24">
@@ -107,6 +124,18 @@
         </header>
 
         <main>
+            <section id="qualification" class="max-w-6xl mx-auto px-6 py-4 pb-16 md:pb-20">
+                <div class="panel rounded-3xl p-7 md:p-10 shadow-soft">
+                    <div class="mb-8">
+                        <p class="text-orange-700 font-bold text-xs uppercase tracking-[0.2em] mb-3">Kualifikasi</p>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Persyaratan Beauty Advisor</h2>
+                        <p class="text-slate-500 text-sm md:text-base leading-relaxed max-w-2xl mt-3">Mohon pastikan Anda memenuhi kualifikasi berikut sebelum melanjutkan pengisian formulir.</p>
+                    </div>
+
+                    <ul id="qualification-list" class="styled-list space-y-3 text-slate-700"></ul>
+                </div>
+            </section>
+
             <section id="process" class="max-w-6xl mx-auto px-6 pb-8">
                 <div class="panel rounded-3xl p-7 md:p-10 shadow-soft">
                     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
@@ -153,8 +182,7 @@
                     </div>
                 </div>
             </section>
-
-           
+        </main>
 
         <footer class="border-t border-slate-200/80 py-10 text-center">
             <div class="max-w-6xl mx-auto px-6">
@@ -166,7 +194,14 @@
 
     <script>
         const appConfig = {
-            "externalFormLink": "https://forms.gle/your-specific-manual-form-link"
+            "externalFormLink": "https://forms.gle/your-specific-manual-form-link",
+            "qualifications": [
+                "Wanita, Berpenampilan Menarik",
+                "Min. Pendidikan SMA/SMK Sederajat",
+                "Percaya Diri & Komunikatif",
+                "Berpengalaman sebagai Beauty Advisor",
+                "Memiliki HP Android"
+            ]
         };
 
         function init() {
@@ -174,6 +209,16 @@
             const mainBtn = document.getElementById('form-main-link');
             if (mainBtn) {
                 mainBtn.href = appConfig.externalFormLink;
+            }
+
+            // Render qualification items from config
+            const qualificationList = document.getElementById('qualification-list');
+            if (qualificationList && Array.isArray(appConfig.qualifications)) {
+                qualificationList.innerHTML = appConfig.qualifications
+                    .map((item) => `
+                        <li class="text-sm md:text-base leading-relaxed pl-1">${item}</li>
+                    `)
+                    .join('');
             }
         }
 
